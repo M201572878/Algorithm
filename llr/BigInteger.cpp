@@ -148,8 +148,8 @@ BigInteger BigInteger::operator * (BigInteger b)
 	}
 	if (this->getNumber().length() == 1 || b.getNumber().length() == 1)
 	{
-	    cout<<this->getNumber()<<"   "<<b.getNumber()<<endl;
-	    getchar();
+	    //cout<<this->getNumber()<<"   "<<b.getNumber()<<endl;
+	    //getchar();
 			mul.setNumber(multiply(getNumber(), b.getNumber()));
 		//mul.setSign(getSign() != b.getSign());
 		//if (mul.getNumber() == "0") // avoid (-0) problem
@@ -170,14 +170,26 @@ BigInteger BigInteger::operator * (BigInteger b)
 		cout << "b1:" << b1.getNumber() << endl;
 		BigInteger b0(b.getNumber().substr(lengthB / 2 , lengthB ) , false);
 		cout << "b0:" << b0.getNumber() << endl;
-		int x = (int)pow(10, (lengthA + 1) / 2 + (lengthB + 1) / 2);
-		BigInteger temp(x);
-		int y = (int)pow(10, (lengthA + 1) / 2);
-		BigInteger temp1(y);
-		int z = (int)pow(10, (lengthB + 1) / 2);
-		BigInteger temp2(z);
-		return (a1 * b1 * temp + a1 * b0 * temp1 + a0 * b1 * temp2 + a0 * b0);
+		int x = (lengthA + 1) / 2 + (lengthB + 1) / 2;
+		//BigInteger temp(x);
+		int y = (lengthA + 1) / 2;
+		//BigInteger temp1(y);
+		int z = (lengthB + 1) / 2;
+		//BigInteger temp2(z);
+
+		return BigInteger::MultiplyPowerOfTen(a1 * b1, x) + BigInteger::MultiplyPowerOfTen(a1 * b0, y) +
+                BigInteger::MultiplyPowerOfTen(a0 * b1, z) + a0 * b0;
 	}
+}
+
+BigInteger BigInteger::MultiplyPowerOfTen(BigInteger baseBigInteger, int powerNumber)
+{
+    string newNumberStr = baseBigInteger.getNumber();
+    for(int i = 0; i < powerNumber; ++i)
+    {
+        newNumberStr += '0';
+    }
+    return BigInteger(newNumberStr);
 }
 
 //-------------------------------------------------------------

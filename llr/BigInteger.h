@@ -25,6 +25,7 @@ public:
 	BigInteger operator - (BigInteger b);
 	BigInteger operator * (BigInteger b);
 	operator string(); // for conversion from BigInteger to string
+	static BigInteger MultiplyPowerOfTen(BigInteger baseBigInteger, int powerNumber);
 private:
 	bool equals(BigInteger n1, BigInteger n2);
 	bool less(BigInteger n1, BigInteger n2);
