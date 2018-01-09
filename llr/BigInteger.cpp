@@ -427,6 +427,10 @@ int main()
 	string sign(product.getSign() ? "-" : "+");
 	string calResult = product.getNumber();
 	calResult.erase(0, calResult.find_first_not_of('0'));
+	if(calResult.length() == 0)
+    {
+        calResult = "0";
+    }
 	cout << sign << calResult << endl;
 	//system("pause");
 	return 0;
