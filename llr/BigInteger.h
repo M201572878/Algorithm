@@ -26,6 +26,10 @@ public:
 	BigInteger operator * (BigInteger b);
 	operator string(); // for conversion from BigInteger to string
 	static BigInteger MultiplyPowerOfTen(BigInteger baseBigInteger, int powerNumber);
+	//将位数补位2的n次方
+    void RegularBigInteger();
+    //将位数短长度补位位数长的
+    void RegularBigInteger(BigInteger& baseBigInteger);
 private:
 	bool equals(BigInteger n1, BigInteger n2);
 	bool less(BigInteger n1, BigInteger n2);

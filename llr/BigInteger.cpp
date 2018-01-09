@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <cmath>
+#include <iomanip>
 #include "BigInteger.h"
 #define MAX 10000 // for strings
 
@@ -180,6 +181,39 @@ BigInteger BigInteger::operator * (BigInteger b)
 		return BigInteger::MultiplyPowerOfTen(a1 * b1, x) + BigInteger::MultiplyPowerOfTen(a1 * b0, y) +
                 BigInteger::MultiplyPowerOfTen(a0 * b1, z) + a0 * b0;
 	}
+}
+
+void BigInteger::RegularBigInteger()
+{
+    int length = number.length();
+    if(length & (length - 1) == 0)
+    {
+        return;
+    }
+
+    int newLength = length;
+    while(newLength & (newLength - 1) != 0)
+    {
+        number = '0' + number;
+        newLength++;
+    }
+}
+
+void BigInteger::RegularBigInteger(BigInteger& baseBigInteger)
+{
+    int selfLength = number.length();
+    int otherLength = baseBigInteger.getNumber().length();
+    if(selfLength == otherLength)
+    {
+        return;
+    }
+
+    int maxLength = max(selfLength, otherLength);
+    BigInteger *changeInteger = selfLength < otherLength ? this : &baseBigInteger;
+
+    ostringstream oss;
+    oss<<setw(maxLength)<<setfill('0')<<changeInteger->getNumber();
+    changeInteger->setNumber(oss.str());
 }
 
 BigInteger BigInteger::MultiplyPowerOfTen(BigInteger baseBigInteger, int powerNumber)
@@ -386,9 +420,14 @@ int main()
 	cin >> X >> Y;
 	BigInteger integerX(X);
 	BigInteger integerY(Y);
+	integerX.RegularBigInteger();
+	integerY.RegularBigInteger();
+	integerX.RegularBigInteger(integerY);
 	BigInteger product(integerX * integerY);
 	string sign(product.getSign() ? "-" : "+");
-	cout << sign << product.getNumber() << endl;
+	string calResult = product.getNumber();
+	calResult.erase(0, calResult.find_first_not_of('0'));
+	cout << sign << calResult << endl;
 	//system("pause");
 	return 0;
 }
