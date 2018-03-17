@@ -5,6 +5,7 @@
 #include<vector>
 #include<set>
 #include<cmath>
+#include<fstream>
 using namespace std;
 
 
@@ -45,11 +46,11 @@ public:
 typedef int Node;
 
 //获取剩余结点中疲劳消耗的最小值
-Node GetMinFatigNode(const vector<Fatigue> smallerFatigueVec, const set<Node>& minNodeSet, const int maxNodeNumber)
+Node GetMinFatigNode(const vector<Fatigue>& smallerFatigueVec, const set<Node>& minNodeSet, const int maxNodeNumber)
 {
     Node currNode = NULL_ID;
     int minFatig = INF_FATIG;
-    for(Node node = START_NODE + 1; node != maxNodeNumber; ++node)//遍历结点
+    for(Node node = START_NODE; node != maxNodeNumber; ++node)//遍历结点
     {
         if(minNodeSet.end() == minNodeSet.find(node))//不在已知结果集里的结点才处理
         {
@@ -82,22 +83,22 @@ int GetNewFatig(const Fatigue& toSrc, const Route& route)
     }
     else//当前道路是小路才需要考虑到B的各种场景
     {
-        newFatigue = toSrc.flatFatig + pow(route.type, 2);//先取平坦路的最小疲劳消耗
+        newFatigue = toSrc.flatFatig + pow((double)route.dis, 2);//先取平坦路的最小疲劳消耗
         vector<HardFatig>::const_iterator itHardRoad = toSrc.hardFatigVec.begin();
         for(; itHardRoad != toSrc.hardFatigVec.end(); ++itHardRoad)//遍历所有从小路到B再到C的场景
         {
-            int fatigIncre = pow(route.type + itHardRoad->dis, 2) - pow(route.type, 2);
-            newFatigue = min(newFatigue, toSrc.flatFatig + fatigIncre);
+            int fatigIncre = pow((double)route.dis + itHardRoad->dis, 2) - pow((double)itHardRoad->dis, 2);
+            newFatigue = min(newFatigue, itHardRoad->fatig + fatigIncre);
         }
     }
     return newFatigue;
 }
 
 //使用最短路径算法计算最小疲劳消耗
-void GetMinDistanceByDijstra(const vector<Route>& routeVec, const int maxNodeNum)
+int GetMinDistanceByDijstra(const vector<Route>& routeVec, const int maxNodeNum)
 {
     set<Node> minNodeSet;
-    minNodeSet.insert(START_NODE);
+    //minNodeSet.insert(START_NODE);
 
     vector<Fatigue> smallerFatigueVec(maxNodeNum + 1);
     Fatigue startNode;
@@ -105,8 +106,8 @@ void GetMinDistanceByDijstra(const vector<Route>& routeVec, const int maxNodeNum
     startNode.flatFatig = 0;
     smallerFatigueVec[START_NODE] = startNode;
 
-    //循环n - 1次,每次算出点1到一个点的最小消耗
-    for(int i = START_NODE + 1; i <= maxNodeNum; ++i)
+    //循环n次,每次算出点1到一个点的最小消耗
+    for(int i = START_NODE; i <= maxNodeNum; ++i)
     {
         //获取未处理结点中疲劳消耗最小的一个结点，加入已知结点中
         Node currNode = GetMinFatigNode(smallerFatigueVec, minNodeSet, maxNodeNum);
@@ -119,8 +120,9 @@ void GetMinDistanceByDijstra(const vector<Route>& routeVec, const int maxNodeNum
             if(itRoute->src == currNode)//当前结点刚加入已知结点集，只用更新从当前结点出发的路径的终点
             {
                 Node destNode = itRoute->dst;
+				Fatigue& toSrc = smallerFatigueVec[currNode];
                 Fatigue& todest = smallerFatigueVec[destNode];
-                int newFatigue = GetNewFatig(smallerFatigueVec[currNode], *itRoute);//获取最小疲劳消耗
+                int newFatigue = GetNewFatig(toSrc, *itRoute);//获取最小疲劳消耗
                 if(itRoute->type == FLAT_TYPE)//当前路径是平坦道路，直接更新
                 {
                     todest.flatFatig = min(todest.flatFatig, newFatigue);
@@ -134,10 +136,19 @@ void GetMinDistanceByDijstra(const vector<Route>& routeVec, const int maxNodeNum
             }
         }
     }
+    return smallerFatigueVec[maxNodeNum].minFatigue;
 }
 
 int main()
 {
+	//备份标准输入
+	streambuf *backup;   
+	backup = cin.rdbuf();  
+
+	//输入重定向
+    ifstream fin;
+    fin.open("data.in");
+    cin.rdbuf(fin.rdbuf());
 	//1.获取输入，保存
 	int m, n;
 	cin>>m>>n;
@@ -148,9 +159,15 @@ int main()
 	{
 		int startCrossing, stopCrossing;
 		Route route;
-		cin >> route.type >> startCrossing >> stopCrossing >> route.dis;
+		cin >> route.type >> route.src >> route.dst >> route.dis;
 		routeVec.push_back(route);
 	}
+	//恢复标准输入
+	cin.rdbuf(backup);
+	//计算疲劳消耗
+	cout<<GetMinDistanceByDijstra(routeVec, m)<<endl;
+	getchar();
 	return 0;
 }
+
 
