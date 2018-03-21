@@ -1,0 +1,9 @@
+g++ -g soucer.cpp -o main	#带-g的参数
+gdb				#使用gdb调试
+file main			#调试main
+l 				#列出代码信息
+b main				#在main()函数入口打一个断点
+r				#运行到断点
+n				#单步跳过
+s				#单步步入
+cpp				#继续执行
