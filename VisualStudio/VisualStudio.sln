@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DriveAnOuting", "DriveAnOuting\DriveAnOuting.vcxproj", "{B3A67201-28DF-4B45-9DCF-2FF6C936C161}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestCpp", "TestCpp\TestCpp.vcxproj", "{1B8C6486-2FAE-4406-988C-DDF4257589B4}"
 EndProject
 Global
@@ -15,12 +13,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B3A67201-28DF-4B45-9DCF-2FF6C936C161}.Debug|x64.ActiveCfg = Debug|Win32
-		{B3A67201-28DF-4B45-9DCF-2FF6C936C161}.Debug|x86.ActiveCfg = Debug|Win32
-		{B3A67201-28DF-4B45-9DCF-2FF6C936C161}.Debug|x86.Build.0 = Debug|Win32
-		{B3A67201-28DF-4B45-9DCF-2FF6C936C161}.Release|x64.ActiveCfg = Release|Win32
-		{B3A67201-28DF-4B45-9DCF-2FF6C936C161}.Release|x86.ActiveCfg = Release|Win32
-		{B3A67201-28DF-4B45-9DCF-2FF6C936C161}.Release|x86.Build.0 = Release|Win32
 		{1B8C6486-2FAE-4406-988C-DDF4257589B4}.Debug|x64.ActiveCfg = Debug|x64
 		{1B8C6486-2FAE-4406-988C-DDF4257589B4}.Debug|x64.Build.0 = Debug|x64
 		{1B8C6486-2FAE-4406-988C-DDF4257589B4}.Debug|x86.ActiveCfg = Debug|Win32
@@ -32,5 +24,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {19627DD6-0DCC-4E21-821C-58CC59BFBDD2}
 	EndGlobalSection
 EndGlobal
