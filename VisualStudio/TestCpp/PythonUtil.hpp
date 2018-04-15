@@ -44,7 +44,7 @@ public:
 			PyObject * pFunc = PyObject_GetAttrString(m_pModule, "compress");
 			PyObject *pResult = PyEval_CallObject(pFunc, pArgs);
 			char *str = NULL;
-			int len = 0;
+			Py_ssize_t len = 0;
 			PyBytes_AsStringAndSize(pResult, &str, &len);
 			outDat.resize(len);
 			strcpy_s(&outDat[0], len, str);
