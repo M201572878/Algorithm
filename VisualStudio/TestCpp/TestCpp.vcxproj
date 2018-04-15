@@ -21,10 +21,12 @@
   <ItemGroup>
     <ClCompile Include="algorithm\DriveAnOuting.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TestDiffPatch.hpp" />
     <ClCompile Include="TestPython.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="diff_match_patch.h" />
+    <ClInclude Include="PythonUtil.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

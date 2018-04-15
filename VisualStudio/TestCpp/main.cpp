@@ -1,57 +1,48 @@
 #include <iostream>
-#include "diff_match_patch.h"
-#include <locale> 
+#include "TestPython.hpp"
+#include "TestDiffPatch.hpp"
+#include "PythonUtil.hpp"
 
 using namespace std;
 
-//int main()
-//{
-//	diff_match_patch<string> dmp;
-//
-//	string commonStr = "I am jack";
-//	string text1 = "I am  a coder";
-//	diff_match_patch<string>::Diffs diffs = dmp.diff_main(commonStr, text1);
-//	diff_match_patch<string>::Diffs::iterator itDiff = diffs.begin();
-//	for (; itDiff != diffs.end(); ++itDiff)
-//	{
-//		cout << itDiff->toString() << " ";
-//	}
-//	cout << endl;
-//	//Result: [(-1, 'Hell'), (1, 'G'), (0, 'o'), (1, 'odbye'), (0, ' World.')]
-//	diff_match_patch<string>::Patches patches = dmp.patch_make(diffs);
-//	string patchesStr = dmp.patch_toText(patches);
-//	cout << patchesStr << endl;
-//	patches = dmp.patch_fromText(patchesStr);
-//	pair<string, vector<bool> > results = dmp.patch_apply(patches, commonStr);
-//
-//	cout << results.first << endl;
-//	getchar();
-//	return 0;
-//}
+static string pythonStr = "\
+import zlib\n\
+\n\
+def TestList():\n\
+	print(\"TestList\")\n\
+	s = b\"hello word, 00000000000000000000000000000000\"\n\
+	print(len(s),s)\n\
+	c = zlib.compress(s)\n\
+	print(len(c), c)\n\
+	d =  zlib.decompress(c)\n\
+	print(d)\n\
+\n\
+def compress(str):\n\
+	try:\n\
+		data = str\n\
+		print(data)\n\
+		c=b\"----------------\"\n\
+		c = zlib.compress(data)\n\
+	except Exception as e:\n\
+		print(e)\n\
+	finally:\n\
+		print(len(c),c)\n\
+		return c\n\
+";
 
 int main()
 {
-	diff_match_patch<wstring> dmp;
+	cout << pythonStr << endl;
+	//TestPython::run();
 
-	wstring commonStr = L"我是 jack";
-	wstring text1 = L"这是测试比较";
-	wcout.imbue(locale("chs"));
-	wcout << commonStr << endl;
-	diff_match_patch<wstring>::Diffs diffs = dmp.diff_main(commonStr, text1);
-	diff_match_patch<wstring>::Diffs::iterator itDiff = diffs.begin();
-	for (; itDiff != diffs.end(); ++itDiff)
-	{
-		wcout << itDiff->toString() << " ";
-	}
-	wcout << endl;
-	//Result: [(-1, 'Hell'), (1, 'G'), (0, 'o'), (1, 'odbye'), (0, ' World.')]
-	diff_match_patch<wstring>::Patches patches = dmp.patch_make(diffs);
-	wstring patchesStr = dmp.patch_toText(patches);
-	wcout << patchesStr << endl;
-	patches = dmp.patch_fromText(patchesStr);
-	pair<wstring, vector<bool> > results = dmp.patch_apply(patches, commonStr);
+	//TestDiffPatch::RunWstring();
+	string str = "1";
+	cout << str.length() << " " << str.size() << endl;
 
-	wcout << results.first << endl;
+	string inStr("sssssss09765653453457679885674中文s"),outStr;
+	PythonUtil::Instance().Compress(inStr, outStr);
+	cout << outStr.length()<<" "<<outStr << endl;
+	
 	getchar();
 	return 0;
 }
